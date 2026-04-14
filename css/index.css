@@ -1,0 +1,84 @@
+:root {
+    --primary: #d4a373; /* Tom bronze/nude */
+    --secondary: #faedcd; /* Bege claro */
+    --accent: #ccd5ae;
+    --text-dark: #333;
+    --bg-light: #fefae0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff;
+    color: var(--text-dark);
+}
+
+header {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.logo-container { display: flex; align-items: center; gap: 15px; }
+.logo-circulo {
+    width: 60px; height: 60px;
+    border-radius: 50%; overflow: hidden;
+    border: 2px solid var(--primary);
+}
+.logo-circulo img { width: 100%; height: 100%; object-fit: cover; }
+.logo-texto { font-family: 'Playfair Display'; font-size: 1.5rem; font-weight: bold; }
+
+.portfolio-section { padding: 50px 5%; text-align: center; }
+.title { font-family: 'Playfair Display'; font-size: 2.5rem; margin-bottom: 30px; }
+
+/* Filtros */
+.filter-container { margin-bottom: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.filter-btn {
+    padding: 10px 20px; border: 1px solid var(--primary);
+    background: transparent; cursor: pointer; border-radius: 20px;
+    transition: 0.3s; font-size: 0.9rem;
+}
+.filter-btn.active, .filter-btn:hover { background: var(--primary); color: white; }
+
+/* Grid Masonry Responsivo */
+.masonry-grid {
+    display: grid;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+/* Regras de Colunas Solicitadas */
+@media (max-width: 767px) { .masonry-grid { grid-template-columns: repeat(2, 1fr); } } /* Celular: 2 colunas */
+@media (min-width: 768px) and (max-width: 1024px) { .masonry-grid { grid-template-columns: repeat(3, 1fr); } } /* Tablet: 3 colunas */
+@media (min-width: 1025px) { .masonry-grid { grid-template-columns: repeat(6, 1fr); } } /* Desktop: 6 colunas */
+
+.item-nicho {
+    background: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    height: 250px;
+    transition: transform 0.3s;
+}
+.item-nicho:hover { transform: translateY(-5px); }
+.item-nicho img { width: 100%; height: 100%; object-fit: cover; }
+.nicho-overlay {
+    position: absolute; bottom: 0; background: rgba(212, 163, 115, 0.9);
+    width: 100%; padding: 10px; color: white; font-weight: 600;
+}
+
+.actions { margin-top: 20px; }
+.btn-toggle {
+    padding: 15px 40px; background: var(--text-dark); color: #fff;
+    border: none; cursor: pointer; font-weight: bold; letter-spacing: 1px;
+}
+
+/* Formulário */
+.contato-section { background: var(--secondary); padding: 80px 5%; display: flex; justify-content: center; }
+.form-container { background: #fff; padding: 40px; border-radius: 15px; width: 100%; max-width: 600px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+.form-container h3 { font-family: 'Playfair Display'; margin-bottom: 20px; }
+input, select, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; }
+.btn-submit { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; }
