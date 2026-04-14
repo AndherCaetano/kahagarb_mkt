@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katharyna Braga | Marketing & Influência</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <div class="logo-circulo">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150" alt="Logo Katharyna Braga">
+            </div>
+            <span class="logo-texto">Katharyna Braga</span>
+        </div>
+    </header>
+
+    <section class="portfolio-section">
+        <h2 class="title">Portfólio por Nichos B2B</h2>
+        
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">Tudo</button>
+            <button class="filter-btn" data-filter="beleza">Salão de Beleza</button>
+            <button class="filter-btn" data-filter="moda">Bazar de Elite</button>
+            <button class="filter-btn" data-filter="alimentos">Alimentos</button>
+            <button class="filter-btn" data-filter="corporativo">Corporativo</button>
+        </div>
+
+        <div id="mosaico-portfólio" class="masonry-grid">
+            </div>
+
+        <div class="actions">
+            <button id="btn-ver-mais" class="btn-toggle">VER MAIS</button>
+            <button id="btn-ver-menos" class="btn-toggle" style="display: none;">VER MENOS</button>
+        </div>
+    </section>
+
+    <section class="contato-section">
+        <div class="form-container">
+            <h3>Faça seu Orçamento</h3>
+            <form id="form-orcamento">
+                <input type="text" placeholder="Nome" required>
+                <input type="email" placeholder="E-mail" required>
+                <input type="tel" placeholder="WhatsApp" value="+55 21 98845-7601">
+                <select>
+                    <option value="">Selecione o Serviço</option>
+                    <option value="social-media">Social Media</option>
+                    <option value="influencia">Marketing de Influência</option>
+                    <option value="conteudo">Criação de Conteúdo</option>
+                </select>
+                <textarea placeholder="Sua Mensagem" rows="4"></textarea>
+                <button type="submit" class="btn-submit">ENVIAR PROPOSTA</button>
+            </form>
+        </div>
+    </section>
+
+    <script src="index.js"></script>
+</body>
+</html>
