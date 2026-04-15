@@ -1,84 +1,106 @@
-:root {
-    --primary: #d4a373; /* Tom bronze/nude */
-    --secondary: #faedcd; /* Bege claro */
-    --accent: #ccd5ae;
-    --text-dark: #333;
-    --bg-light: #fefae0;
+// Dados do portfólio com campo de link e estrutura para legendas
+const nichos = [
+    { cat: 'beleza', nome: 'Spa Deia e Renata', img:'imagens/spadeiaerenata.png', link: 'https://www.spadeiaerenata.com.br/?utm_source=google&utm_medium=search&utm_campaign=produtos&gad_source=1&gad_campaignid=20214486426&gbraid=0AAAAABdfFyLQYREtCVQv0GFXH2KmBEeFR&gclid=Cj0KCQjwy_fOBhC6ARIsAHKFB7_LPRgIZ6dkrSimqzKwfsmhPVE8qET3Ezangw2qVes9-BAG7aFfkHYaAsyJEALw_wcB' },
+    { cat: 'moda', nome: 'Bazar Luxo', img: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8', link: '#' },
+    { cat: 'alimentos', nome: 'Pizzaria Napolitana', img: 'https://images.unsplash.com/photo-1513104890138-7c749659a591', link: '#' },
+    { cat: 'alimentos', nome: 'Burger Artesanal', img: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add', link: '#' },
+    { cat: 'beleza', nome: 'Spa & Wellness', img: 'https://images.unsplash.com/photo-1544161515-4af6b1d86b59', link: '#' },
+    { cat: 'moda', nome: 'Concept Store', img: 'https://images.unsplash.com/photo-1481437156560-3205f6a55735', link: '#' },
+    { cat: 'alimentos', nome: 'Confeitaria', img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777', link: '#' },
+    { cat: 'beleza', nome: 'Hair Styling', img: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9', link: '#' },
+    { cat: 'moda', nome: 'Moda Praia', img: 'https://images.unsplash.com/photo-1502716119720-b23a93e5fe1b', link: '#' },
+    { cat: 'alimentos', nome: 'Sushi Bar', img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c', link: '#' },
+    { cat: 'beleza', nome: 'Maquiagem Pro', img: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796', link: '#' },
+    { cat: 'alimentos', nome: 'Café Boutique', img: 'https://images.unsplash.com/photo-1501339817302-444d182d3005', link: '#' }
+];
+
+const grid = document.getElementById('masonry-grid');
+const btnLoad = document.getElementById('btn-load');
+const btnLess = document.getElementById('btn-less');
+let filterActive = 'all';
+
+// Define o limite inicial de itens baseando-se no dispositivo
+function getInitialLimit() {
+    return window.innerWidth <= 1024 ? 6 : 12;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+// Função de renderização com legendas externas e links na imagem e no nome
+function render(showAll = false) {
+    if (!grid) return;
+    grid.innerHTML = '';
+    const filtered = nichos.filter(n => filterActive === 'all' || n.cat === filterActive);
+    const initialLimit = getInitialLimit();
+    const limit = showAll ? filtered.length : initialLimit;
+    
+    filtered.slice(0, limit).forEach(n => {
+        grid.innerHTML += `
+            <div class="item-nicho">
+                <a href="${n.link}" target="_blank" class="nicho-link-wrapper">
+                    <img src="${n.img}" alt="${n.nome}">
+                </a>
+                <div class="nicho-info-caption">
+                    <span class="nicho-label-cat">${n.cat}</span>
+                    <a href="${n.link}" target="_blank" class="nicho-company-name">${n.nome}</a>
+                </div>
+            </div>`;
+    });
 
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #fff;
-    color: var(--text-dark);
+    if (btnLoad) {
+        btnLoad.style.display = (!showAll && filtered.length > initialLimit) ? 'inline-block' : 'none';
+    }
+    if (btnLess) {
+        btnLess.style.display = (showAll && filtered.length > initialLimit) ? 'inline-block' : 'none';
+    }
 }
 
-header {
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    background: #fff;
-    border-bottom: 1px solid #eee;
+// Configuração dos filtros de nicho
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        document.querySelector('.filter-btn.active').classList.remove('active');
+        e.target.classList.add('active');
+        filterActive = e.target.dataset.filter;
+        render(false);
+    });
+});
+
+// Controle do Menu Sanduíche Mobile
+document.getElementById('mobile-menu').addEventListener('click', () => {
+    document.getElementById('nav-menu').classList.toggle('active');
+});
+
+// Controle da Seção "Sobre Mim" (Trajetória Profissional)
+const cvSection = document.getElementById('sobre-ancora');
+const btnSobre = document.getElementById('btn-sobre-mim');
+const btnFechar = document.getElementById('btn-fechar-sobre');
+const linkSobre = document.getElementById('link-sobre');
+
+function toggleSobre(show) {
+    if (cvSection) {
+        cvSection.style.display = show ? 'block' : 'none';
+        if (show) cvSection.scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
-.logo-container { display: flex; align-items: center; gap: 15px; }
-.logo-circulo {
-    width: 60px; height: 60px;
-    border-radius: 50%; overflow: hidden;
-    border: 2px solid var(--primary);
-}
-.logo-circulo img { width: 100%; height: 100%; object-fit: cover; }
-.logo-texto { font-family: 'Playfair Display'; font-size: 1.5rem; font-weight: bold; }
+if (btnSobre) btnSobre.addEventListener('click', () => toggleSobre(true));
+if (linkSobre) linkSobre.addEventListener('click', (e) => {
+    e.preventDefault();
+    toggleSobre(true);
+});
+if (btnFechar) btnFechar.addEventListener('click', () => toggleSobre(false));
 
-.portfolio-section { padding: 50px 5%; text-align: center; }
-.title { font-family: 'Playfair Display'; font-size: 2.5rem; margin-bottom: 30px; }
+// Listeners para carregar mais ou menos projetos
+if (btnLoad) btnLoad.addEventListener('click', () => render(true));
+if (btnLess) btnLess.addEventListener('click', () => render(false));
+window.addEventListener('resize', () => render(false));
 
-/* Filtros */
-.filter-container { margin-bottom: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-.filter-btn {
-    padding: 10px 20px; border: 1px solid var(--primary);
-    background: transparent; cursor: pointer; border-radius: 20px;
-    transition: 0.3s; font-size: 0.9rem;
-}
-.filter-btn.active, .filter-btn:hover { background: var(--primary); color: white; }
-
-/* Grid Masonry Responsivo */
-.masonry-grid {
-    display: grid;
-    gap: 15px;
-    margin-bottom: 30px;
+// Impede que o navegador restaure a posição de rolagem e garante o topo no carregamento
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
 }
 
-/* Regras de Colunas Solicitadas */
-@media (max-width: 767px) { .masonry-grid { grid-template-columns: repeat(2, 1fr); } } /* Celular: 2 colunas */
-@media (min-width: 768px) and (max-width: 1024px) { .masonry-grid { grid-template-columns: repeat(3, 1fr); } } /* Tablet: 3 colunas */
-@media (min-width: 1025px) { .masonry-grid { grid-template-columns: repeat(6, 1fr); } } /* Desktop: 6 colunas */
+window.addEventListener('load', () => {
+    window.scrollTo(0, 0);
+});
 
-.item-nicho {
-    background: #f9f9f9;
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-    height: 250px;
-    transition: transform 0.3s;
-}
-.item-nicho:hover { transform: translateY(-5px); }
-.item-nicho img { width: 100%; height: 100%; object-fit: cover; }
-.nicho-overlay {
-    position: absolute; bottom: 0; background: rgba(212, 163, 115, 0.9);
-    width: 100%; padding: 10px; color: white; font-weight: 600;
-}
-
-.actions { margin-top: 20px; }
-.btn-toggle {
-    padding: 15px 40px; background: var(--text-dark); color: #fff;
-    border: none; cursor: pointer; font-weight: bold; letter-spacing: 1px;
-}
-
-/* Formulário */
-.contato-section { background: var(--secondary); padding: 80px 5%; display: flex; justify-content: center; }
-.form-container { background: #fff; padding: 40px; border-radius: 15px; width: 100%; max-width: 600px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-.form-container h3 { font-family: 'Playfair Display'; margin-bottom: 20px; }
-input, select, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; }
-.btn-submit { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; }
+// Inicialização da galeria
+render();
