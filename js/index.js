@@ -1,7 +1,7 @@
 // Dados do portfólio com campo de link e estrutura para legendas
 const nichos = [
     { cat: 'beleza', nome: 'Spa Deia e Renata', img:'imagens/spadeiaerenata.png', link: 'https://www.spadeiaerenata.com.br/?utm_source=google&utm_medium=search&utm_campaign=produtos&gad_source=1&gad_campaignid=20214486426&gbraid=0AAAAABdfFyLQYREtCVQv0GFXH2KmBEeFR&gclid=Cj0KCQjwy_fOBhC6ARIsAHKFB7_LPRgIZ6dkrSimqzKwfsmhPVE8qET3Ezangw2qVes9-BAG7aFfkHYaAsyJEALw_wcB' },
-    { cat: 'moda', nome: 'Bazar Luxo', img: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8', link: '#' },
+    { cat: 'moda', nome: 'Férfér', img: 'imagens/ferfer.png', link: 'https://www.instagram.com/ferfer.rio/' },
     { cat: 'alimentos', nome: 'Pizzaria Napolitana', img: 'https://images.unsplash.com/photo-1513104890138-7c749659a591', link: '#' },
     { cat: 'alimentos', nome: 'Burger Artesanal', img: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add', link: '#' },
     { cat: 'beleza', nome: 'Spa & Wellness', img: 'https://images.unsplash.com/photo-1544161515-4af6b1d86b59', link: '#' },
