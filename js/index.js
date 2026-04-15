@@ -19,21 +19,30 @@ const btnLoad = document.getElementById('btn-load');
 const btnLess = document.getElementById('btn-less');
 let filterActive = 'all';
 
+// VARIÁVEL DE ESTADO: Controla se a galeria está expandida ou não
+let isShowingAll = false;
+
 // Define o limite inicial de itens baseando-se no dispositivo
 function getInitialLimit() {
     return window.innerWidth <= 1024 ? 6 : 12;
 }
 
-// Função de renderização com legendas externas e links na imagem e no nome
-function render(showAll = false) {
+// Função de renderização principal
+function render(showAll = isShowingAll) {
     if (!grid) return;
-    grid.innerHTML = '';
+    
+    // Atualiza o estado global para que o 'resize' saiba o que fazer
+    isShowingAll = showAll;
+    
+    // Filtra os itens com base na categoria ativa
     const filtered = nichos.filter(n => filterActive === 'all' || n.cat === filterActive);
     const initialLimit = getInitialLimit();
-    const limit = showAll ? filtered.length : initialLimit;
+    const limit = isShowingAll ? filtered.length : initialLimit;
     
+    // Constrói o HTML primeiro em uma variável para evitar múltiplos reflows de tela
+    let htmlContent = '';
     filtered.slice(0, limit).forEach(n => {
-        grid.innerHTML += `
+        htmlContent += `
             <div class="item-nicho">
                 <a href="${n.link}" target="_blank" class="nicho-link-wrapper">
                     <img src="${n.img}" alt="${n.nome}">
@@ -45,30 +54,41 @@ function render(showAll = false) {
             </div>`;
     });
 
+    grid.innerHTML = htmlContent;
+
+    // Gerencia a visibilidade dos botões "Ver Mais" e "Ver Menos"
     if (btnLoad) {
-        btnLoad.style.display = (!showAll && filtered.length > initialLimit) ? 'inline-block' : 'none';
+        btnLoad.style.display = (!isShowingAll && filtered.length > initialLimit) ? 'inline-block' : 'none';
     }
     if (btnLess) {
-        btnLess.style.display = (showAll && filtered.length > initialLimit) ? 'inline-block' : 'none';
+        btnLess.style.display = (isShowingAll && filtered.length > initialLimit) ? 'inline-block' : 'none';
     }
 }
 
 // Configuração dos filtros de nicho
 document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
-        document.querySelector('.filter-btn.active').classList.remove('active');
+        const activeBtn = document.querySelector('.filter-btn.active');
+        if (activeBtn) activeBtn.classList.remove('active');
+        
         e.target.classList.add('active');
         filterActive = e.target.dataset.filter;
+        
+        // Ao trocar de filtro, sempre voltamos para a visão reduzida por padrão
         render(false);
     });
 });
 
 // Controle do Menu Sanduíche Mobile
-document.getElementById('mobile-menu').addEventListener('click', () => {
-    document.getElementById('nav-menu').classList.toggle('active');
-});
+const mobileMenu = document.getElementById('mobile-menu');
+if (mobileMenu) {
+    mobileMenu.addEventListener('click', () => {
+        const navMenu = document.getElementById('nav-menu');
+        if (navMenu) navMenu.classList.toggle('active');
+    });
+}
 
-// Controle da Seção "Sobre Mim" (Trajetória Profissional)
+// Controle da Seção "Sobre Mim"
 const cvSection = document.getElementById('sobre-ancora');
 const btnSobre = document.getElementById('btn-sobre-mim');
 const btnFechar = document.getElementById('btn-fechar-sobre');
@@ -88,18 +108,28 @@ if (linkSobre) linkSobre.addEventListener('click', (e) => {
 });
 if (btnFechar) btnFechar.addEventListener('click', () => toggleSobre(false));
 
-// Listeners para carregar mais ou menos projetos
+// Listeners dos botões de carregamento
 if (btnLoad) btnLoad.addEventListener('click', () => render(true));
-if (btnLess) btnLess.addEventListener('click', () => render(false));
-window.addEventListener('resize', () => render(false));
+if (btnLess) btnLess.addEventListener('click', () => {
+    render(false);
+    // Faz o scroll voltar suavemente para o início da galeria ao esconder os itens
+    grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
 
-// Impede que o navegador restaure a posição de rolagem e garante o topo no carregamento
-if ('scrollRestoration' in history) {
-    history.scrollRestoration = 'manual';
-}
+// CORREÇÃO PARA MOBILE: Evita que o resize (barra de endereço) resete a galeria
+let lastWidth = window.innerWidth;
+window.addEventListener('resize', () => {
+    if (window.innerWidth !== lastWidth) {
+        lastWidth = window.innerWidth;
+        render(isShowingAll); 
+    }
+});
 
+// Garante o topo no carregamento inicial apenas se não houver um anchor na URL
 window.addEventListener('load', () => {
-    window.scrollTo(0, 0);
+    if (!window.location.hash) {
+        window.scrollTo(0, 0);
+    }
 });
 
 // Inicialização da galeria
